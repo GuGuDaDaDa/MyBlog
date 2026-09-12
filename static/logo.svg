@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 1024 1024"
+     role="img"
+     aria-labelledby="logo-title logo-desc">
+  <title id="logo-title">logo</title>
+  <desc id="logo-desc">由深青色几何鸟形、珊瑚色翅膀和椭圆纸面构成的极简标志</desc>
+
+  <g id="cuckoo" fill="#123B4A">
+    <path id="body" d="M179 346 L589 538 L576 565 L380 630 Z"/>
+    <circle id="head" cx="636" cy="571" r="53"/>
+  </g>
+
+  <path id="wing" fill="#E76F51" d="M393 291 L563 509 L385 430 Z"/>
+
+  <ellipse id="paper" cx="647" cy="701" rx="181" ry="35" fill="#123B4A"/>
+</svg>
