@@ -69,6 +69,13 @@ name = '友链'
 pageRef = '/friends'
 weight = 20
 
+[params.comments]
+api_base = 'https://blog.gugudada.cn'
+site_id = 'MyBlog'
+emoji = ['/void.json', 'https://emoticons.assets.hzchu.top/json/owo/bili_tv.json', 'https://emoticons.assets.hzchu.top/json/owo/rxy.json', 'https://emoticons.assets.hzchu.top/json/owo/fluentui-emoji-face.json']
+# Standalone pages: set to true to show comments on /about/ or /friends/ (default off).
+about = false
+friends = true
 
 [params.social]
 github = 'https://github.com/GuGuDaDaDa'
