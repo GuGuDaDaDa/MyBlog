@@ -5,6 +5,9 @@ description: 海内存知己，天涯若比邻。
 ---
 
 欢迎来到友链页面。这里连接着一些常去串门、内容优质或志趣相投的博主朋友们。
+## 朋友们的博客
+
+{{< friends >}}
 
 ## 互换友链
 
@@ -21,5 +24,3 @@ description: 海内存知己，天涯若比邻。
 - **链接**：`https://blog.gugudada.cn`
 - **简介**：海雾深处，字字为灯
 - **图标**：`https://blog.gugudada.cn/avatar.png`
-
-### 朋友们的博客
