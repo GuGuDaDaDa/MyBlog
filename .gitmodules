@@ -1,3 +1,4 @@
 [submodule "themes/night-theme"]
 	path = themes/night-theme
 	url = https://github.com/GuGuDaDaDa/new-theme.git
+	branch = main
