@@ -9,7 +9,7 @@ cover: "cover.jpg"
 math: true
 ---
 
-《火焰之纹章：万紫千红》{{< fnref 1 >}}（日版原名：ファイアーエムブレム 万紫千紅，美版译名：*Fire Emblem: Fortune's Weave*，中文官方译名《火焰之纹章 万缕千丝》）在鞑古扎大陆的斗祭舞台上拉开序幕。本作在回归经典战略战棋扎实手感的同时，对底层攻防模型、负重惩罚、耐久结算以及角色专属系统进行了深度重构。
+《火焰之纹章：万紫千红》{{< fnref 1 >}}，（中文官方译名《火焰之纹章 万缕千丝》）在鞑古扎大陆的斗祭舞台上拉开序幕。本作在回归经典战略战棋扎实手感的同时，对底层攻防模型、负重惩罚、耐久结算以及角色专属系统进行了深度重构。
 
 无论是在斗祭竞技场还是大陆地图探索中，摸清底层数值逻辑都是制定战术配队、凹点规划与高难度开荒的基础。本文将游戏内的伤害计算公式与战斗机制进行系统化拆解。
 
@@ -127,9 +127,7 @@ $$\text{AS} = \text{Spd} - \max\left(0,\, \text{Wt} - \left\lfloor \frac{\text{S
 
 ---
 
-![鞑古扎大陆要塞远景氛围](battlefield-atmosphere.png)
-
-*鞑古扎大陆要塞远景* {{< fnref 2 >}}
+![鞑古扎大陆](battlefield-atmosphere.png)
 
 ---
 
@@ -143,9 +141,6 @@ $$\text{AS} = \text{Spd} - \max\left(0,\, \text{Wt} - \left\lfloor \frac{\text{S
 
 {{< refers title="参考与注释" >}}
 {{< refer num=1 source="任天堂官方宣传物料" url="https://www.nintendo.com" >}}
-封面图来自 Nintendo / Intelligent Systems 官方公布的《火焰之纹章：万紫千红》（万缕千丝）主视觉图。
-{{< /refer >}}
-{{< refer num=2 source="AI 生成插画说明" >}}
-文中要塞远景配图为 AI 辅助生成的奇幻战场氛围示意图，仅作视觉美化，不代表游戏实际关卡地图。
+《火焰之纹章：万紫千红》（万缕千丝）主视觉图。
 {{< /refer >}}
 {{< /refers >}}
