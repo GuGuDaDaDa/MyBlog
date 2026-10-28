@@ -1,0 +1,55 @@
+<meta name="night-build" content="{{ partial "data/build-id.html" . }}" />
+<meta name="night-base" content="{{ site.Home.RelPermalink }}" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+{{/* The synchronous theme script below waits for CSS before body parsing. */}}
+{{ partial "head/css.html" . }}
+{{ partial "head/theme-init.html" . }}
+{{- $page := . -}}
+{{- $pager := false -}}
+{{- if or .IsHome (eq .Kind "section") (eq .Kind "term") -}}
+  {{- $context := partial "list/context.html" . -}}
+  {{- with $context.pager }}{{ $pager = . }}{{ end -}}
+{{- end -}}
+{{- $parts := slice -}}
+{{- if eq $page.Kind "404" -}}
+  {{- $parts = $parts | append (i18n "notFound.title") -}}
+{{- else if not $page.IsHome -}}
+  {{- $parts = $parts | append $page.Title -}}
+{{- end -}}
+{{- if and $pager (gt $pager.PageNumber 1) -}}
+  {{- $parts = $parts | append (i18n "meta.pageTitle" (dict "Page" $pager.PageNumber)) -}}
+{{- end -}}
+{{- $parts = $parts | append site.Title -}}
+<title data-page-meta>{{ delimit $parts " · " }}</title>
+{{- with site.Params.favicon }}
+  <link rel="icon" href="{{ . | relURL }}" />
+{{- else }}
+  <link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml" />
+{{- end }}
+{{ partial "head/metadata.html" (dict "page" $page "pager" $pager "title" (delimit $parts " · ")) }}
+{{ partial "head/analytics.html" . }}
+{{ partial "head/js.html" . }}
+{{/* KaTeX 公式渲染支持 */}}
+<link rel="stylesheet" href="{{ "katex/katex.min.css" | relURL }}" />
+<script defer src="{{ "katex/katex.min.js" | relURL }}"></script>
+<script defer src="{{ "katex/contrib/auto-render.min.js" | relURL }}"></script>
+<script>
+  function renderAllMath() {
+    if (typeof renderMathInElement === 'function') {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '\\[', right: '\\]', display: true}
+        ],
+        ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        throwOnError: false
+      });
+    }
+  }
+  document.addEventListener('DOMContentLoaded', renderAllMath);
+  document.addEventListener('night:page-ready', renderAllMath);
+  window.addEventListener('load', renderAllMath);
+</script>
