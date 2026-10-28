@@ -9,9 +9,7 @@ cover: "cover.jpg"
 math: true
 ---
 
-> 封面图来源：Nintendo / Intelligent Systems 官方公布的《火焰之纹章：万紫千红》（万缕千丝）主视觉图。
-
-《火焰之纹章：万紫千红》（日版原名：ファイアーエムブレム 万紫千紅，美版译名：*Fire Emblem: Fortune's Weave*，中文官方译名《火焰之纹章 万缕千丝》）在鞑古扎大陆的斗祭舞台上拉开序幕。本作在回归经典战略战棋扎实手感的同时，对底层攻防模型、负重惩罚、耐久结算以及角色专属系统进行了深度重构。
+《火焰之纹章：万紫千红》{{< fnref 1 >}}（日版原名：ファイアーエムブレム 万紫千紅，美版译名：*Fire Emblem: Fortune's Weave*，中文官方译名《火焰之纹章 万缕千丝》）在鞑古扎大陆的斗祭舞台上拉开序幕。本作在回归经典战略战棋扎实手感的同时，对底层攻防模型、负重惩罚、耐久结算以及角色专属系统进行了深度重构。
 
 无论是在斗祭竞技场还是大陆地图探索中，摸清底层数值逻辑都是制定战术配队、凹点规划与高难度开荒的基础。本文将游戏内的伤害计算公式与战斗机制进行系统化拆解。
 
@@ -24,23 +22,36 @@ math: true
 ### 1. 物理与魔法伤害
 
 * **物理单发伤害**：
-  $$\text{Damage}_{\text{Phys}} = \max\left(0,\, \text{Atk}_{\text{Phys}} - \text{Def}_{\text{Target}}\right)$$
-  其中：
-  $$\text{Atk}_{\text{Phys}} = \text{力量}(\text{Str}) + \text{武器威力}(\text{Mt}) + \text{战技/技能攻击加成}$$
-  $$\text{Def}_{\text{Target}} = \text{防守}(\text{Def}) + \text{地形防守加成} + \text{被动技能修正}$$
+  $$\text{Dmg}_{\text{Phys}} = \max\left(0,\, \text{Atk}_{\text{Phys}} - \text{Def}_{\text{Target}}\right)$$
+
+  其中综合物理攻击力与防御力拆解如下：
+  $$\begin{aligned}
+  \text{Atk}_{\text{Phys}} &= \text{Str} + \text{Mt} + \text{Skill}_{\text{Atk}} \\
+  \text{Def}_{\text{Target}} &= \text{Def} + \text{Terrain} + \text{Skill}_{\text{Def}}
+  \end{aligned}$$
+  * $\text{Str}$：角色力量值；
+  * $\text{Mt}$：武器面板威力；
+  * $\text{Def}$：目标防守属性；
+  * $\text{Terrain}$：地形防守修正；
+  * $\text{Skill}$：战技或被动特技修正。
 
 * **魔法单发伤害**：
-  $$\text{Damage}_{\text{Mag}} = \max\left(0,\, \text{Atk}_{\text{Mag}} - \text{Res}_{\text{Target}}\right)$$
-  其中：
-  $$\text{Atk}_{\text{Mag}} = \text{魔力}(\text{Mag}) + \text{法术威力}(\text{Mt}) + \text{战技/技能攻击加成}$$
-  $$\text{Res}_{\text{Target}} = \text{魔防}(\text{Res}) + \text{地形魔防加成} + \text{被动技能修正}$$
+  $$\text{Dmg}_{\text{Mag}} = \max\left(0,\, \text{Atk}_{\text{Mag}} - \text{Res}_{\text{Target}}\right)$$
+
+  其中综合魔法攻击力与魔防拆解如下：
+  $$\begin{aligned}
+  \text{Atk}_{\text{Mag}} &= \text{Mag} + \text{Mt} + \text{Skill}_{\text{Atk}} \\
+  \text{Res}_{\text{Target}} &= \text{Res} + \text{Terrain} + \text{Skill}_{\text{Res}}
+  \end{aligned}$$
+  * $\text{Mag}$：角色魔力值；
+  * $\text{Res}$：目标魔防属性。
 
 ### 2. 特效克制与倍率修正
 
 * **兵种特效（克制）**：弓箭克制飞行、长枪克制骑兵、重甲杀手克制重甲。触发克制时，系统优先对武器基础威力进行增幅（通常为 $\text{Mt} \times 2$ 或 $\text{Mt} \times 3$），再计入总攻击力进行破甲结算，而非直接对最终伤害乘算。这使得低威力但带特效的武器面对高防克制目标时能产生质变。
 * **技能倍率加成**：如部分角色的“全力攻击”或特定战技，直接对基础结算后的伤害进行乘算（例如 $\times 1.3$ 或 $\times 1.5$）。
 * **必杀（暴击）伤害**：
-  $$\text{Damage}_{\text{Crit}} = \text{Damage}_{\text{Base}} \times 3$$
+  $$\text{Dmg}_{\text{Crit}} = \text{Dmg}_{\text{Base}} \times 3$$
   命中暴击时伤害稳定翻 3 倍。
 
 ---
@@ -49,13 +60,13 @@ math: true
 
 本作对历代武器磨损机制进行了重大革新：**普通攻击不再消耗武器耐久度**，只有主动发动战技时才会扣除耐久；魔法则采用独立的使用次数配额制，通关或在基地休息即可回满。
 
-在这一设定下，武器的**重量（Weight）**成为了限制高威力和高级武器肆意使用的核心门槛。
+在这一设定下，武器的 **重量（Weight）** 成为了限制高威力和高级武器肆意使用的核心门槛。
 
 ### 1. 攻击速度（Attack Speed, AS）
 
 角色装备武器时，若武器过重，将直接惩罚其有效速度。本作引入了“力量按比例抵消重量”的规则：
 
-$$\text{AS} = \text{速度}(\text{Spd}) - \max\left(0,\, \text{武器重量}(\text{Wt}) - \left\lfloor \frac{\text{力量}(\text{Str})}{5} \right\rfloor\right)$$
+$$\text{AS} = \text{Spd} - \max\left(0,\, \text{Wt} - \left\lfloor \frac{\text{Str}}{5} \right\rfloor\right)$$
 
 * 每拥有 **5 点力量**，即可无惩罚抵消 **1 点武器重量**。
 * 力量未达到减重阈值前，每多出 1 点超额负重，角色攻速便净亏 1 点。攻速不仅决定是否追击，还直接挂钩回避率。
@@ -76,22 +87,22 @@ $$\text{AS} = \text{速度}(\text{Spd}) - \max\left(0,\, \text{武器重量}(\te
 ### 1. 命中率与回避率
 
 * **攻击方基础命中率**：
-  $$\text{Hit} = \text{武器基础命中} + \text{技巧}(\text{Dex}) + \text{支援加成} + \text{技能修正}$$
+  $$\text{Hit} = \text{Hit}_{\text{Wpn}} + \text{Dex} + \text{Support} + \text{Skill}$$
 * **防守方基础回避率**：
-  $$\text{Avoid} = \text{攻击速度}(\text{AS}) + \text{武器回避修正} + \text{地形回避加成} + \text{技能修正}$$
+  $$\text{Avoid} = \text{AS} + \text{Avo}_{\text{Wpn}} + \text{Terrain}_{\text{Avo}} + \text{Skill}$$
 * **最终实机命中概率**：
-  $$\text{Combat Hit Rate} = \max\left(0,\, \min\left(100,\, \text{Hit} - \text{Avoid}\right)\right)$$
+  $$\text{Hit Rate} = \max\left(0,\, \min\left(100,\, \text{Hit} - \text{Avoid}\right)\right)$$
 
 *注：本作地形对回避的收益非常显著，例如基础灌木丛直接提供 $+20\%$ 回避，前期依靠树林卡位配合高攻速单位能有效降低暴毙风险。*
 
 ### 2. 必杀率与必杀回避
 
 * **必杀率（Critical Rate）**：
-  $$\text{Crit} = \text{武器必杀值} + \left\lfloor \frac{\text{技巧}(\text{Dex})}{2} \right\rfloor + \left\lfloor \frac{\text{幸运}(\text{Lck})}{2} \right\rfloor + \text{特技加成}$$
+  $$\text{Crit} = \text{Crit}_{\text{Wpn}} + \left\lfloor \frac{\text{Dex} + \text{Lck}}{2} \right\rfloor + \text{Skill}$$
 * **必杀回避（Dodge / Crit Avoid）**：
-  $$\text{Dodge} = \text{幸运}(\text{Lck}) + \text{技能修正}$$
+  $$\text{Dodge} = \text{Lck} + \text{Skill}$$
 * **最终暴击触发概率**：
-  $$\text{Combat Crit Rate} = \max\left(0,\, \text{Crit} - \text{Dodge}\right)$$
+  $$\text{Crit Rate} = \max\left(0,\, \text{Crit} - \text{Dodge}\right)$$
 
 ---
 
@@ -106,7 +117,7 @@ $$\text{AS} = \text{速度}(\text{Spd}) - \max\left(0,\, \text{武器重量}(\te
 * 施加击退、破防或移动位移等战术状态。
 
 ### 2. 烈焰技（Blaze Arts）与过载博弈
-烈焰技为特定主要角色专属的高阶行动，以**消耗自身生命值（HP）**为启动代价，并随着释放积攒专用烈焰槽：
+烈焰技为特定主要角色专属的高阶行动，以 **消耗自身生命值（HP）** 为启动代价，并随着释放积攒专用烈焰槽：
 * **半蓄状态**：烈焰槽充能达到一半时，角色获得额外的常态伤害增强；
 * **过载爆发（Overdrive）**：当烈焰槽蓄满时，可释放威力极大的终结爆发技，但随之触发过载代价——**该英雄在本场战斗剩余时间内，最大生命值（Max HP）直接减半**。
 * **战术取舍**：这种设定让烈焰技成为典型的“双刃剑”。在面对 Boss 强突或危急关头，过载爆发能瞬间定胜负，但过早失控则会让核心主力变为一触即溃的脆皮。
@@ -117,12 +128,24 @@ $$\text{AS} = \text{速度}(\text{Spd}) - \max\left(0,\, \text{武器重量}(\te
 ---
 
 ![鞑古扎大陆要塞远景氛围](battlefield-atmosphere.png)
-*（配图：AI 辅助生成的奇幻战场与要塞要冲氛围，不代表实际关卡地图）*
+
+*鞑古扎大陆要塞远景* {{< fnref 2 >}}
 
 ---
 
 ## 五、 开荒实战建议
 
-1. **前期重视武器锻造减重**：游戏前中期的锻造石资源相对充裕，优先将主力携带的铁系、钢系武器进行锻造强化，重点选择“降低重量”与“提升命中”分支。由于力量除以 5 才能抵消 1 点重量，锻造减重 1~2 点相当于变相省下了 5~10 点力量对攻速的束缚。
+1. **前期重视武器锻造减重**：游戏前中期的锻造石资源相对充裕，优先将主力携带的铁系、钢系武器进行锻造强化，重点选择“降低重量”与“提升命中”分支。由于力量除以 5 才能抵消 1 点重量，锻造减重 1 到 2 点相当于变相省下了 5 到 10 点力量对攻速的束缚。
 2. **轻装弓箭全员配置**：绝大多数常规武器在本作中不受兵种限制（拳套等个别武器除外）。前期尽量为近战手备一把轻型训练弓或铁弓，利用射程安全白嫖敌方近战单位血线。
 3. **计算好攻速追击线**：面对敌方高敏盗贼或剑士时，切忌盲目换上重型大斧导致攻速被拉开 $\ge 4$ 进而遭到双连击。时刻关注面板的攻速差值，是保证生存的第一准则。
+
+---
+
+{{< refers title="参考与注释" >}}
+{{< refer num=1 source="任天堂官方宣传物料" url="https://www.nintendo.com" >}}
+封面图来自 Nintendo / Intelligent Systems 官方公布的《火焰之纹章：万紫千红》（万缕千丝）主视觉图。
+{{< /refer >}}
+{{< refer num=2 source="AI 生成插画说明" >}}
+文中要塞远景配图为 AI 辅助生成的奇幻战场氛围示意图，仅作视觉美化，不代表游戏实际关卡地图。
+{{< /refer >}}
+{{< /refers >}}
