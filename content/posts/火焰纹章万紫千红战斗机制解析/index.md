@@ -9,7 +9,7 @@ cover: "cover.jpg"
 math: true
 ---
 
-《火焰之纹章：万紫千红》{{< fnref 1 >}}，（中文官方译名《火焰之纹章 万缕千丝》）在鞑古扎大陆的斗祭舞台上拉开序幕。本作在回归经典战略战棋扎实手感的同时，对底层攻防模型、负重惩罚、耐久结算以及角色专属系统进行了深度重构。
+《火焰之纹章：万紫千红》{{< fnref 1 >}}（中文官方译名《火焰之纹章 万缕千丝》）在鞑古扎大陆的斗祭舞台上拉开序幕。本作在回归经典战略战棋扎实手感的同时，对底层攻防模型、负重惩罚、耐久结算以及角色专属系统进行了深度重构。
 
 无论是在斗祭竞技场还是大陆地图探索中，摸清底层数值逻辑都是制定战术配队、凹点规划与高难度开荒的基础。本文将游戏内的伤害计算公式与战斗机制进行系统化拆解。
 
@@ -29,11 +29,18 @@ math: true
   \text{Atk}_{\text{Phys}} &= \text{Str} + \text{Mt} + \text{Skill}_{\text{Atk}} \\
   \text{Def}_{\text{Target}} &= \text{Def} + \text{Terrain} + \text{Skill}_{\text{Def}}
   \end{aligned}$$
-  * $\text{Str}$：角色力量值；
-  * $\text{Mt}$：武器面板威力；
-  * $\text{Def}$：目标防守属性；
-  * $\text{Terrain}$：地形防守修正；
-  * $\text{Skill}$：战技或被动特技修正。
+
+  **公式符号详解**：
+  * $\text{Dmg}_{\text{Phys}}$（Physical Damage，物理单发伤害）：最终结算给目标扣除的单次物理生命值。
+  * $\text{Atk}_{\text{Phys}}$（Physical Attack，综合物理攻击力）：攻击方打出的综合物理打击强度。
+  * $\text{Def}_{\text{Target}}$（Target Defense，实际物理防御力）：防守方受击时实际发挥的综合护甲强度。
+  * $\text{Str}$（Strength，力量）：攻击方角色的力量属性值，构成物理伤害的角色基础。
+  * $\text{Mt}$（Might，武器威力）：装备武器的面板固有破坏力。
+  * $\text{Def}$（Defense，防守）：防守方角色的基础防守属性值。
+  * $\text{Terrain}$（Terrain Defense，地形防御）：防守方所处地块的地形防御加成（如要塞提供 $+2$、城门提供 $+3$ 等）。
+  * $\text{Skill}_{\text{Atk}}$（Attack Skill Bonus，攻击特技加成）：主动战技或攻击类被动特技带来的固定攻击力补正。
+  * $\text{Skill}_{\text{Def}}$（Defense Skill Bonus，防御特技加成）：受击方防御类被动特技提供的固定护甲或减免补正。
+  * $\max(0,\, A - B)$：数学取大函数。当攻击力低于防御力时伤害归 $0$，避免出现负数反向加血。
 
 * **魔法单发伤害**：
   $$\text{Dmg}_{\text{Mag}} = \max\left(0,\, \text{Atk}_{\text{Mag}} - \text{Res}_{\text{Target}}\right)$$
@@ -43,8 +50,16 @@ math: true
   \text{Atk}_{\text{Mag}} &= \text{Mag} + \text{Mt} + \text{Skill}_{\text{Atk}} \\
   \text{Res}_{\text{Target}} &= \text{Res} + \text{Terrain} + \text{Skill}_{\text{Res}}
   \end{aligned}$$
-  * $\text{Mag}$：角色魔力值；
-  * $\text{Res}$：目标魔防属性。
+
+  **公式符号详解**：
+  * $\text{Dmg}_{\text{Mag}}$（Magical Damage，魔法单发伤害）：最终结算给目标扣除的单次魔法生命值。
+  * $\text{Atk}_{\text{Mag}}$（Magical Attack，综合魔法攻击力）：攻击方施展的综合魔法打击强度。
+  * $\text{Res}_{\text{Target}}$（Target Resistance，实际魔法防御力）：防守方受击时实际发挥的综合魔防强度。
+  * $\text{Mag}$（Magic，魔力）：攻击方角色的魔力属性值，构成魔法伤害的角色基础。
+  * $\text{Mt}$（Might，法术威力）：法术或魔法武器的面板固有破坏力。
+  * $\text{Res}$（Resistance，魔防）：防守方角色的基础魔防属性值。
+  * $\text{Terrain}$（Terrain Resistance，地形魔防）：神殿、祭坛等特殊地形提供的魔防加成。
+  * $\text{Skill}_{\text{Res}}$（Resistance Skill Bonus，魔防特技加成）：受击方被动特技提供的额外魔防减免。
 
 ### 2. 特效克制与倍率修正
 
@@ -52,7 +67,10 @@ math: true
 * **技能倍率加成**：如部分角色的“全力攻击”或特定战技，直接对基础结算后的伤害进行乘算（例如 $\times 1.3$ 或 $\times 1.5$）。
 * **必杀（暴击）伤害**：
   $$\text{Dmg}_{\text{Crit}} = \text{Dmg}_{\text{Base}} \times 3$$
-  命中暴击时伤害稳定翻 3 倍。
+
+  **公式符号详解**：
+  * $\text{Dmg}_{\text{Crit}}$（Critical Damage，必杀伤害）：命中判定触发暴击时的单发最终伤害。
+  * $\text{Dmg}_{\text{Base}}$（Base Damage，单发基础伤害）：未暴击时的常规单发伤害（即前述计算所得的 $\text{Dmg}_{\text{Phys}}$ 或 $\text{Dmg}_{\text{Mag}}$）。命中必杀时伤害稳定翻 3 倍。
 
 ---
 
@@ -68,14 +86,23 @@ math: true
 
 $$\text{AS} = \text{Spd} - \max\left(0,\, \text{Wt} - \left\lfloor \frac{\text{Str}}{5} \right\rfloor\right)$$
 
-* 每拥有 **5 点力量**，即可无惩罚抵消 **1 点武器重量**。
-* 力量未达到减重阈值前，每多出 1 点超额负重，角色攻速便净亏 1 点。攻速不仅决定是否追击，还直接挂钩回避率。
+**公式符号详解**：
+* $\text{AS}$（Attack Speed，攻击速度）：角色的有效攻速，主导战斗中的追击判定与基础回避率。
+* $\text{Spd}$（Speed，速度）：角色的自身基础速度属性值。
+* $\text{Wt}$（Weight，武器重量）：当前装备武器或法术的重量数值。
+* $\text{Str}$（Strength，力量）：角色的自身基础力量属性值。
+* $\lfloor x \rfloor$：数学向下取整函数（Floor）。例如 $\lfloor 14 / 5 \rfloor = 2$。代表角色力量每拥有整 **5 点力量**，才能抵消 **1 点武器重量**；不足 5 点的部分不产生抵消收益。
+* $\max(0,\, \text{Wt} - \lfloor \text{Str} / 5 \rfloor)$：超额负重惩罚值。若力量抵消值大于等于武器重量，该项归 0（力量充裕时攻速不受武器拖累，但也不会反向增加攻速）。
 
 ### 2. 追击判定机制
 
 * **追击触发线**：
   $$\text{AS}_{\text{Attacker}} - \text{AS}_{\text{Defender}} \ge 4$$
-  当攻击方攻速领先防守方 4 点或以上时，结算第二次攻击。
+
+  **公式符号详解**：
+  * $\text{AS}_{\text{Attacker}}$（Attacker AS，攻击方攻速）：主动发起攻击方的有效攻击速度。
+  * $\text{AS}_{\text{Defender}}$（Defender AS，防守方攻速）：防守方的有效攻击速度。
+  * 当攻击方攻速领先防守方 4 点或以上时，触发追击（单回合内连续进行第二次攻击）。
 * **连击武器**：装备勇者系列武器或徒手拳套时，单次交锋自带双连击；若满足攻速差 $\ge 4$，单回合总计可打出 4 次判定。
 
 ---
@@ -86,23 +113,51 @@ $$\text{AS} = \text{Spd} - \max\left(0,\, \text{Wt} - \left\lfloor \frac{\text{S
 
 ### 1. 命中率与回避率
 
-* **攻击方基础命中率**：
-  $$\text{Hit} = \text{Hit}_{\text{Wpn}} + \text{Dex} + \text{Support} + \text{Skill}$$
-* **防守方基础回避率**：
-  $$\text{Avoid} = \text{AS} + \text{Avo}_{\text{Wpn}} + \text{Terrain}_{\text{Avo}} + \text{Skill}$$
+* **基础命中与回避值**：
+  $$\begin{aligned}
+  \text{Hit} &= \text{Hit}_{\text{Wpn}} + \text{Dex} + \text{Support} + \text{Skill}_{\text{Hit}} \\
+  \text{Avoid} &= \text{AS} + \text{Avo}_{\text{Wpn}} + \text{Terrain}_{\text{Avo}} + \text{Skill}_{\text{Avo}}
+  \end{aligned}$$
+
 * **最终实机命中概率**：
   $$\text{Hit Rate} = \max\left(0,\, \min\left(100,\, \text{Hit} - \text{Avoid}\right)\right)$$
 
-*注：本作地形对回避的收益非常显著，例如基础灌木丛直接提供 $+20\%$ 回避，前期依靠树林卡位配合高攻速单位能有效降低暴毙风险。*
+**公式符号详解**：
+* $\text{Hit Rate}$（Combat Hit Rate，实机命中率）：战斗预测面板最终显示的实际命中概率（百分比，严格落在 0% 到 100% 之间）。
+* $\text{Hit}$（Total Hit，综合命中值）：攻击方的综合命中判定数值。
+* $\text{Hit}_{\text{Wpn}}$（Weapon Hit，武器命中率）：武器或法术面板自带的基础命中率。
+* $\text{Dex}$（Dexterity，技巧）：角色的技巧/灵巧属性值，决定武器操控与命中精度。
+* $\text{Support}$（Support Bonus，支援加成）：相邻或协同攻击友军提供的支援羁绊加成。
+* $\text{Skill}_{\text{Hit}}$（Hit Skill Bonus，命中特技加成）：被动特技或战技带来的命中率额外补正（如“剑术·命中+15”）。
+* $\text{Avoid}$（Total Avoid，综合回避值）：防守方的综合回避判定数值。
+* $\text{AS}$（Attack Speed，攻击速度）：防守方的实际攻击速度，攻速按 1:1 比例直接转化为基础回避能力。
+* $\text{Avo}_{\text{Wpn}}$（Weapon Avoid，武器回避修正）：武器自身附带的回避补正（部分轻灵剑增加回避，笨重武器可能倒扣回避）。
+* $\text{Terrain}_{\text{Avo}}$（Terrain Avoid，地形回避加成）：防守方所处地块的地形回避率加成（如基础灌木丛直接提供 $+20\%$ 回避，森林提供 $+20\%$，要塞提供 $+30\%$ 等）。
+* $\text{Skill}_{\text{Avo}}$（Avoid Skill Bonus，回避特技加成）：防御类被动特技带来的回避率额外补正（如“敏捷回避+10”）。
+* $\min(100,\, \dots)$ 与 $\max(0,\, \dots)$：区间夹紧函数，确保最终命中率严格落在 $[0\%,\, 100\%]$ 范围，既不会出现溢出破百，也不会跌为负数。
 
 ### 2. 必杀率与必杀回避
 
-* **必杀率（Critical Rate）**：
-  $$\text{Crit} = \text{Crit}_{\text{Wpn}} + \left\lfloor \frac{\text{Dex} + \text{Lck}}{2} \right\rfloor + \text{Skill}$$
-* **必杀回避（Dodge / Crit Avoid）**：
-  $$\text{Dodge} = \text{Lck} + \text{Skill}$$
+* **基础必杀与必杀回避值**：
+  $$\begin{aligned}
+  \text{Crit} &= \text{Crit}_{\text{Wpn}} + \left\lfloor \frac{\text{Dex} + \text{Lck}}{2} \right\rfloor + \text{Skill}_{\text{Crit}} \\
+  \text{Dodge} &= \text{Lck} + \text{Skill}_{\text{Ddg}}
+  \end{aligned}$$
+
 * **最终暴击触发概率**：
   $$\text{Crit Rate} = \max\left(0,\, \text{Crit} - \text{Dodge}\right)$$
+
+**公式符号详解**：
+* $\text{Crit Rate}$（Combat Critical Rate，实机必杀率）：战斗预测面板最终显示的实际必杀（暴击）触发概率（百分比）。
+* $\text{Crit}$（Total Critical，综合必杀值）：攻击方的综合必杀判定数值。
+* $\text{Crit}_{\text{Wpn}}$（Weapon Critical，武器必杀率）：武器或法术面板自带的必杀值（如杀手系武器、倭刀等通常自带 20 到 30 点基础必杀）。
+* $\text{Dex}$（Dexterity，技巧）：攻击方角色的技巧属性值。
+* $\text{Lck}$（Luck，幸运）：角色的幸运属性值。
+* $\lfloor \frac{\text{Dex} + \text{Lck}}{2} \rfloor$：技巧与幸运属性相加折半并向下取整，两者共同构成角色的基础必杀输出潜力。
+* $\text{Skill}_{\text{Crit}}$（Critical Skill Bonus，必杀特技加成）：特技提供的额外必杀率（如“必杀+10”）。
+* $\text{Dodge}$（Critical Avoid，必杀回避/防暴击）：防守方抵抗被暴击的能力，主要由防守方自身的幸运属性（$\text{Lck}$）决定。
+* $\text{Skill}_{\text{Ddg}}$（Dodge Skill Bonus，防暴特技加成）：防御类特技提供的额外必杀回避补正。
+* $\max(0,\, \text{Crit} - \text{Dodge})$：当攻击方的必杀值低于防守方的防暴击能力时，实机暴击率归零。
 
 ---
 
