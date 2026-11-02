@@ -31,49 +31,47 @@
 {{ partial "head/analytics.html" . }}
 {{ partial "head/js.html" . }}
 {{/* Hugo 0.122+ 官方数学公式（KaTeX）支持与移动端自适应 */}}
-{{ if or .Params.math site.Params.math }}
-  <link rel="stylesheet" href="{{ "katex/katex.min.css" | relURL }}" />
-  <style>
-    .katex-display {
-      overflow-x: auto;
-      overflow-y: hidden;
-      max-width: 100%;
-      padding: 0.3em 0;
-      margin: 0.8em 0;
-      -webkit-overflow-scrolling: touch;
-    }
+<link rel="stylesheet" href="{{ "katex/katex.min.css" | relURL }}" />
+<style>
+  .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+    padding: 0.3em 0;
+    margin: 0.8em 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  .katex {
+    max-width: 100%;
+  }
+  @media (max-width: 640px) {
     .katex {
-      max-width: 100%;
+      font-size: 0.88em;
     }
-    @media (max-width: 640px) {
-      .katex {
-        font-size: 0.88em;
-      }
-      .katex-display {
-        padding: 0.2em 0;
-        margin: 0.5em 0;
-      }
+    .katex-display {
+      padding: 0.2em 0;
+      margin: 0.5em 0;
     }
-  </style>
-  <script defer src="{{ "katex/katex.min.js" | relURL }}"></script>
-  <script defer src="{{ "katex/contrib/auto-render.min.js" | relURL }}"></script>
-  <script>
-    function renderMath() {
-      if (typeof renderMathInElement === 'function') {
-        renderMathInElement(document.body, {
-          delimiters: [
-            {left: '$$', right: '$$', display: true},
-            {left: '$', right: '$', display: false},
-            {left: '\\(', right: '\\)', display: false},
-            {left: '\\[', right: '\\]', display: true}
-          ],
-          ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-          throwOnError: false
-        });
-      }
+  }
+</style>
+<script defer src="{{ "katex/katex.min.js" | relURL }}"></script>
+<script defer src="{{ "katex/contrib/auto-render.min.js" | relURL }}" onload="renderMath()"></script>
+<script>
+  function renderMath() {
+    if (typeof renderMathInElement === 'function') {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '\\[', right: '\\]', display: true}
+        ],
+        ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        throwOnError: false
+      });
     }
-    document.addEventListener('DOMContentLoaded', renderMath);
-    document.addEventListener('night:page-ready', renderMath);
-    window.addEventListener('load', renderMath);
-  </script>
-{{ end }}
+  }
+  document.addEventListener('DOMContentLoaded', renderMath);
+  document.addEventListener('night:page-ready', renderMath);
+  window.addEventListener('load', renderMath);
+</script>

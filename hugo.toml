@@ -56,6 +56,7 @@ files = ['! **']
 source = 'assets'
 target = 'assets'
 [params]
+math = true
 description = '记录技术实践、游戏体验，和偶尔冒出来的奇思妙想。'
 author = 'GuGuDaDa'
 footerText = '海雾深处，字字为灯'
