@@ -44,7 +44,7 @@ sudo apt-get install librime-data-luna-pinyin
 
 安装完成后可以在设置中选择输入法方案。
 
-![Ubuntu设置](https://static.246266.xyz/i/2024/01/24/65b0f5f1511bb.png#vwid=982&vhei=816)
+![Ubuntu设置](65b0f5f1511bb.png)
 
 ### 一些基本的配置
 

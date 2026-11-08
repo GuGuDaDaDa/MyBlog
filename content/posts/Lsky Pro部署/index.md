@@ -117,7 +117,7 @@ systemctl restart nginx
 
 然后打开nginx配置文件中设置的域名以及端口号，成功则会出现以下界面：
 
-![image-20230630181600274](https://static.246266.xyz/i/2023/06/30/649eab65a3e7e.png#vwid=1920&vhei=1080)
+![image-20230630181600274](649eab65a3e7e.png)
 
 
 
@@ -125,13 +125,13 @@ systemctl restart nginx
 
 出现上述界面后点击下一步，配置数据库。
 
-![安装界面](https://static.246266.xyz/i/2023/06/30/649eabe608f67.png#vwid=1920&vhei=1080)
+![安装界面](649eabe608f67.png)
 
 新建数据库，填入数据库名称以及密码。管理员账户和密码是Lsky后台的管理账户。点击立即安装后即可成功安装。
 
 成功后可以进入管理页面。
 
-![管理页面](https://static.246266.xyz/i/2023/06/30/649eade44bbce.png#vwid=1920&vhei=998)
+![管理页面](649eade44bbce.png)
 
 到此Lsky Pro就算安装完毕。
 
@@ -153,7 +153,7 @@ Typora集成了两种方式，一种是[Picgo app](https://github.com/Molunerfin
 
 在Typora->文件->偏好设置->图像->上传服务设定中，选择PicGo-Core(command line)，点击下载或更新。
 
-![Typora设置](https://static.246266.xyz/i/2023/06/30/649eb126aac39.png#vwid=674&vhei=174)
+![Typora设置](649eb126aac39.png)
 
 下载完成后，进行LANKONG插件的安装，此处参考LANKONG项目下的[issue #10](https://github.com/hellodk34/picgo-plugin-lankong/issues/10),首先打开picgo的安装位置，winwos下一般在`C:\Users\用户名\AppData\Roaming\Typora\picgo\win64\`,在命令行执行：
 
@@ -261,11 +261,11 @@ windows 则为`C:\Users\你的用户名\.picgo\config.json`
 
    返回结果：
 
-   ![返回结果](https://static.246266.xyz/i/2023/06/30/649eb65f57d47.png#vwid=1286&vhei=55)
+   ![返回结果](649eb65f57d47.png)
 
    将token中的返回数据与`"Bearer "`拼接(注意有一个空格),填入到配置文件中去，然后在Typora中测试。
 
-   ![测试结果](https://static.246266.xyz/i/2023/06/30/649eb756d8641.png#vwid=598&vhei=652)
+   ![测试结果](649eb756d8641.png)
 
    安装成功。
 
