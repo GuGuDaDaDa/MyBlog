@@ -1,7 +1,7 @@
 ---
 title: "为Hermes添加主动提醒插件"
 date: 2026-11-10T19:05:00+08:00
-draft: true
+draft: false
 tags: ["AGENT", "HERMES", "技术"]
 description: "让你的Hermes摆脱被动的一问一答模式，根据历史会话主动跟进并提醒未闭环事项。"
 toc: true
