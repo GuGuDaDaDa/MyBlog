@@ -5,7 +5,7 @@ draft: false
 tags: ["AGENT", "HERMES", "技术"]
 description: "让你的Hermes摆脱被动的一问一答模式，根据历史会话主动跟进并提醒未闭环事项。"
 toc: true
-cover: "cover.jpg"
+cover: "cover.png"
 math: true
 ---
 
