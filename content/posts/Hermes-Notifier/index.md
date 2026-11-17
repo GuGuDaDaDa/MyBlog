@@ -5,6 +5,7 @@ draft: false
 tags: ["AGENT", "HERMES", "技术"]
 description: "让你的Hermes摆脱被动的一问一答模式，根据历史会话主动跟进并提醒未闭环事项。"
 toc: true
+featured: true
 cover: "cover.png"
 math: true
 ---
@@ -21,7 +22,7 @@ math: true
 
 ![image-20261114181003107](assets/image-20261114181003107.png)
 
-[插件仓库](https://github.com/GuGuDaDaDa/hermes-notifier)
+https://github.com/GuGuDaDaDa/hermes-notifier
 
 ## 实现原理
 

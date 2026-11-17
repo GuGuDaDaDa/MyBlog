@@ -3,7 +3,7 @@ title = 'VibeCoding手记'
 date = '2026-05-26T22:17:01+08:00'
 draft = false
 description = '把虚无缥缈的氛围，变成触手可及的产物。'
-featured = true
+featured = false
 tags = ['AI', '开发']
 cover = 'cover.png'
 +++
