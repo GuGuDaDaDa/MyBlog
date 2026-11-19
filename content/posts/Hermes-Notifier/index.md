@@ -20,7 +20,7 @@ math: true
 
 {{< gallery >}}
   {{< photo src="assets/image-20261114180953252.png" alt="Hermes 主动提醒插件实现效果" >}}
-  {{< photo src="assets/image-20261114181003107.png" alt="Hermes 主动提醒插件实现效果" >}}
+  {{< photo src="assets/51c50b76129fe5500ec27cb24b68e0c08f95b153_2_325x499.jpeg" alt="Hermes 主动提醒插件实现效果" >}}
 {{< /gallery >}}
 
 https://github.com/GuGuDaDaDa/hermes-notifier
