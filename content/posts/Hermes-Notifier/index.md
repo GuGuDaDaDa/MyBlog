@@ -18,9 +18,10 @@ math: true
 
 ## 实现效果
 
-![image-20261114180953252](assets/image-20261114180953252.png)
-
-![image-20261114181003107](assets/image-20261114181003107.png)
+{{< gallery >}}
+  {{< photo src="assets/image-20261114180953252.png" alt="Hermes 主动提醒插件实现效果" >}}
+  {{< photo src="assets/image-20261114181003107.png" alt="Hermes 主动提醒插件实现效果" >}}
+{{< /gallery >}}
 
 https://github.com/GuGuDaDaDa/hermes-notifier
 
